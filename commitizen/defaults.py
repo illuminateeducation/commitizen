@@ -20,6 +20,7 @@ DEFAULT_SETTINGS: Dict[str, Any] = {
     "changelog_file": "CHANGELOG.md",
     "changelog_incremental": False,
     "changelog_start_rev": None,
+    "changelog_tag_filter_pattern": None,
     "update_changelog_on_bump": False,
 }
 
@@ -44,3 +45,4 @@ change_type_order = ["BREAKING CHANGE", "feat", "fix", "refactor", "perf"]
 
 commit_parser = r"^(?P<change_type>feat|fix|refactor|perf|BREAKING CHANGE)(?:\((?P<scope>[^()\r\n]*)\)|\()?(?P<breaking>!)?:\s(?P<message>.*)?"  # noqa
 version_parser = r"(?P<version>([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?)"
+tag_filter_pattern = ".*"

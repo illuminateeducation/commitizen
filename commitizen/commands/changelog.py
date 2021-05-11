@@ -46,6 +46,9 @@ class Changelog:
         self.change_type_order = (
             self.config.settings.get("change_type_order") or self.cz.change_type_order
         )
+        self.tag_filter_pattern = args.get(
+            "tag_filter_pattern"
+        ) or self.config.settings.get("changelog_tag_filter_pattern")
 
     def _find_incremental_rev(self, latest_version: str, tags: List[GitTag]) -> str:
         """Try to find the 'start_rev'.
@@ -78,6 +81,7 @@ class Changelog:
         changelog_pattern = self.cz.changelog_pattern
         start_rev = self.start_rev
         unreleased_version = self.unreleased_version
+        tag_filter_pattern = self.tag_filter_pattern
         changelog_meta: Dict = {}
         change_type_map: Optional[Dict] = self.change_type_map
         changelog_message_builder_hook: Optional[
@@ -111,6 +115,7 @@ class Changelog:
             unreleased_version,
             change_type_map=change_type_map,
             changelog_message_builder_hook=changelog_message_builder_hook,
+            tag_filter_pattern=tag_filter_pattern,
         )
         if self.change_type_order:
             tree = changelog.order_changelog_tree(tree, self.change_type_order)

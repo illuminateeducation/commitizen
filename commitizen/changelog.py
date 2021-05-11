@@ -73,10 +73,15 @@ def generate_tree_from_commits(
     unreleased_version: Optional[str] = None,
     change_type_map: Optional[Dict[str, str]] = None,
     changelog_message_builder_hook: Optional[Callable] = None,
+    tag_filter_pattern: Optional[str] = None,
 ) -> Iterable[Dict]:
     pat = re.compile(changelog_pattern)
     map_pat = re.compile(commit_parser, re.MULTILINE)
     body_map_pat = re.compile(commit_parser, re.MULTILINE | re.DOTALL)
+    if tag_filter_pattern:
+        tag_filter_pat = re.compile(tag_filter_pattern)
+    else:
+        tag_filter_pat = re.compile(defaults.tag_filter_pattern)
 
     # Check if the latest commit is not tagged
     latest_commit = commits[0]
@@ -86,16 +91,30 @@ def generate_tree_from_commits(
     current_tag_date: str = ""
     if unreleased_version is not None:
         current_tag_date = date.today().isoformat()
-    if current_tag is not None and current_tag.name:
+    if (
+        current_tag is not None
+        and current_tag.name
+        and tag_filter_pat.match(current_tag.name)
+    ):
         current_tag_name = current_tag.name
         current_tag_date = current_tag.date
 
     changes: Dict = defaultdict(list)
-    used_tags: List = [current_tag]
+    used_tags: List = []
+    if (
+        current_tag is not None
+        and current_tag.name
+        and tag_filter_pat.match(current_tag.name)
+    ):
+        used_tags.append(current_tag)
     for commit in commits:
         commit_tag = get_commit_tag(commit, tags)
 
-        if commit_tag is not None and commit_tag not in used_tags:
+        if (
+            commit_tag is not None
+            and commit_tag not in used_tags
+            and tag_filter_pat.match(commit_tag.name)
+        ):
             used_tags.append(commit_tag)
             yield {
                 "version": current_tag_name,

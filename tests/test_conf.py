@@ -45,6 +45,7 @@ _settings = {
     "changelog_file": "CHANGELOG.md",
     "changelog_incremental": False,
     "changelog_start_rev": None,
+    "changelog_tag_filter_pattern": None,
     "update_changelog_on_bump": False,
 }
 
@@ -58,6 +59,7 @@ _new_settings = {
     "changelog_file": "CHANGELOG.md",
     "changelog_incremental": False,
     "changelog_start_rev": None,
+    "changelog_tag_filter_pattern": None,
     "update_changelog_on_bump": False,
 }
 

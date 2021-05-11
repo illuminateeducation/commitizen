@@ -191,6 +191,14 @@ data = {
                             "If not set, it will generate changelog from the start"
                         ),
                     },
+                    {
+                        "name": "--tag-filter-pattern",
+                        "default": "",
+                        "help": (
+                            "optional regular expression tag filter "
+                            "to choose what tags to include in the changelog"
+                        ),
+                    },
                 ],
             },
             {
